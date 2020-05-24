@@ -3,7 +3,7 @@
 /// @dev Ref: https://github.com/ethereum/EIPs/issues/721
 ///  See the KittyCore contract documentation to understand how the various contract facets are arranged.
 
-contract mediaartOwnership is mediaartBase, ERC721 {
+contract mediaartOwnership is MediaartBase, ERC721 {
 
     /// @notice Name and symbol of the non fungible token, as defined in ERC721.
     string public constant name = "Cryptomediaart";
@@ -40,6 +40,8 @@ contract mediaartOwnership is mediaartBase, ERC721 {
 
     /// @dev Set the address of the sibling contract that tracks metadata.
     ///  CEO only.
+
+    // OnlyCEO 를 뺐음
     function setMetadataAddress(address _contractAddress) public {
         erc721Metadata = ERC721Metadata(_contractAddress);
     }
@@ -81,7 +83,7 @@ contract mediaartOwnership is mediaartBase, ERC721 {
         uint256 _tokenId
     )
         external
-        whenNotPaused
+       /* whenNotPaused*/ //자체주석처리함
     {
         // Safety check to prevent against an unexpected 0x0 default.
         require(_to != address(0));
@@ -112,7 +114,7 @@ contract mediaartOwnership is mediaartBase, ERC721 {
         uint256 _tokenId
     )
         external
-        whenNotPaused
+     /*   whenNotPaused*/ //자체주석
     {
         // Only an owner can grant transfer approval.
         require(_owns(msg.sender, _tokenId));
@@ -137,7 +139,7 @@ contract mediaartOwnership is mediaartBase, ERC721 {
         uint256 _tokenId
     )
         external
-        whenNotPaused
+      //  whenNotPaused//자체주석처리함
     {
         // Safety check to prevent against an unexpected 0x0 default.
         require(_to != address(0));
@@ -156,7 +158,7 @@ contract mediaartOwnership is mediaartBase, ERC721 {
     /// @notice Returns the total number of Kitties currently in existence.
     /// @dev Required for ERC-721 compliance.
     function totalSupply() public view returns (uint) {
-        return kitties.length - 1;
+        return mediaarts.length - 1;
     }
 
     /// @notice Returns the address currently assigned ownership of a given Kitty.
@@ -166,7 +168,7 @@ contract mediaartOwnership is mediaartBase, ERC721 {
         view
         returns (address owner)
     {
-        owner = kittyIndexToOwner[_tokenId];
+        owner = mediaartIndexToOwner[_tokenId];
 
         require(owner != address(0));
     }
@@ -185,16 +187,16 @@ contract mediaartOwnership is mediaartBase, ERC721 {
             return new uint256[](0);
         } else {
             uint256[] memory result = new uint256[](tokenCount);
-            uint256 totalCats = totalSupply();
+            uint256 totalmediaarts = totalSupply();
             uint256 resultIndex = 0;
 
             // We count on the fact that all cats have IDs starting at 1 and increasing
             // sequentially up to the totalCat count.
-            uint256 catId;
+            uint256 mediaartId;
 
-            for (catId = 1; catId <= totalCats; catId++) {
-                if (kittyIndexToOwner[catId] == _owner) {
-                    result[resultIndex] = catId;
+            for (mediaartId = 1; mediaartId <=  totalmediaarts; mediaartId++) {
+                if (mediaartIndexToOwner[mediaartId] == _owner) {
+                    result[resultIndex] = mediaartId;
                     resultIndex++;
                 }
             }
